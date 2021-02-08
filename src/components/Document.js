@@ -81,10 +81,9 @@ const Document = () => {
 
   const pdfDownload = () => {
     const replaceWords = (string) => {
-      var newString = "";
-      newString = string.replace("<company>", company);
-      newString = string.replace("<position>", position.toLowerCase());
-      return newString;
+      var newString = string.replace("<position>", position.toLowerCase());
+      var newString2 = newString.replace("<company>", company);
+      return newString2;
     };
 
     var doc = new jsPDF();

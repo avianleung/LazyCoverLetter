@@ -22,3 +22,9 @@
   background-color: rgba(56, 56, 56, 0.733);
   z-index: 1;
 }
+
+iframe {
+  position: fixed;
+  height: 95%;
+  width: 39%;
+}

@@ -79,7 +79,7 @@ const Document = () => {
     window.location.reload(false);
   };
 
-  const pdfDownload = () => {
+  const pdfDownload = (print, view) => {
     const replaceWords = (string) => {
       var newString = string.replace("<position>", position.toLowerCase());
       var newString2 = newString.replace("<company>", company);
@@ -118,8 +118,15 @@ const Document = () => {
     doc.text(name, 25, topMargin + 6, { align: "left" });
 
     //Download
-    doc.autoPrint({ variant: "non-conform" });
-    doc.output("dataurlnewwindow", company + ".pdf");
+    if (print) {
+      doc.autoPrint({ variant: "non-conform" });
+      doc.output("dataurlnewwindow", company + ".pdf");
+    }
+
+    if (view) {
+      console.log("output", doc.output("dataurlstring"));
+      return doc.output("dataurlstring");
+    }
   };
 
   return (
@@ -153,156 +160,163 @@ const Document = () => {
           </div>
         </div>
       )}
-      <div className='row mb-2'>
-        <div className='col'>
-          <h1>Lazy Cover Letter</h1>
-        </div>
-      </div>
-      <div className='row mb-1'>
-        <div className='col-1 mr-5'>Name:</div>
-        <input
-          className='col-3'
-          type='text'
-          value={name}
-          onChange={(e) => {
-            setName(e.target.value);
-          }}
-        />
-      </div>
-      <div className='row mb-1'>
-        <div className='col-1 mr-5'>Phone:</div>
-        <input
-          className='col-3'
-          type='text'
-          value={number}
-          onChange={(e) => {
-            setNumber(e.target.value);
-          }}
-        />
-      </div>
-      <div className='row mb-1'>
-        <div className='col-1 mr-5'>Email:</div>
-        <input
-          className='col-3'
-          type='email'
-          value={email}
-          onChange={(e) => {
-            setEmail(e.target.value);
-          }}
-        />
-      </div>
-      <div className='row mb-1'>
-        <div className='col-1 mr-5'>Company:</div>
-        <input
-          className='col-3'
-          type='text'
-          value={company}
-          onChange={(e) => {
-            setCompany(e.target.value);
-          }}
-        />
-      </div>
-      <div className='row mb-4'>
-        <div className='col-1 mr-5'>Position:</div>
-        <input
-          className='col-3'
-          type='text'
-          value={position}
-          onChange={(e) => {
-            setPosition(e.target.value);
-          }}
-        />
-      </div>
       <div className='row'>
-        <div className='col-1 mr-5'>Open:</div>
-        <input
-          className='col-3'
-          type='text'
-          value={open}
-          onChange={(e) => {
-            setOpen(e.target.value);
-          }}
-        />
-      </div>
-
-      <div className='row mt-4'>
-        <div className='col'>
-          {
-            "* Replace the company name with <company> and the position with <position> in your paragraphs."
-          }
-        </div>
-      </div>
-
-      {blocks.map((block, idx) => (
-        <div className='row'>
-          <div className='col-1 mr-5 mt-3'>
-            {"Paragraph " + (idx + 1) + ":"}
+        <div className='col-7 ml-3'>
+          <div className='row mb-2'>
+            <div className='col mb-4 mt-4'>
+              <h1>Lazy Cover Letter</h1>
+            </div>
           </div>
-          <textarea
-            className='col-9 mt-3'
-            rows='4'
-            cols='100'
-            onChange={(e) => editBlock(idx, e.target.value)}
-            value={block}
-          ></textarea>
-          <input
-            type='button'
-            className='btn btn-outline-danger mt-3 ml-2'
-            onClick={() => delBlock(idx)}
-            defaultValue='X'
-          />
+          <div className='row mb-1'>
+            <div className='col-1 mr-5'>Name:</div>
+            <input
+              className='col-3'
+              type='text'
+              value={name}
+              onChange={(e) => {
+                setName(e.target.value);
+              }}
+            />
+          </div>
+          <div className='row mb-1'>
+            <div className='col-1 mr-5'>Phone:</div>
+            <input
+              className='col-3'
+              type='text'
+              value={number}
+              onChange={(e) => {
+                setNumber(e.target.value);
+              }}
+            />
+          </div>
+          <div className='row mb-1'>
+            <div className='col-1 mr-5'>Email:</div>
+            <input
+              className='col-3'
+              type='email'
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
+            />
+          </div>
+          <div className='row mb-1'>
+            <div className='col-1 mr-5'>Company:</div>
+            <input
+              className='col-3'
+              type='text'
+              value={company}
+              onChange={(e) => {
+                setCompany(e.target.value);
+              }}
+            />
+          </div>
+          <div className='row mb-4'>
+            <div className='col-1 mr-5'>Position:</div>
+            <input
+              className='col-3'
+              type='text'
+              value={position}
+              onChange={(e) => {
+                setPosition(e.target.value);
+              }}
+            />
+          </div>
+          <div className='row'>
+            <div className='col-1 mr-5'>Open:</div>
+            <input
+              className='col-3'
+              type='text'
+              value={open}
+              onChange={(e) => {
+                setOpen(e.target.value);
+              }}
+            />
+          </div>
+
+          <div className='row mt-4'>
+            <div className='col'>
+              {
+                "* Replace the company name with <company> and the position with <position> in your paragraphs."
+              }
+            </div>
+          </div>
+
+          {blocks.map((block, idx) => (
+            <div className='row'>
+              <div className='col-1 mr-5 mt-3'>
+                {"Paragraph " + (idx + 1) + ":"}
+              </div>
+              <textarea
+                className='col-9 mt-3'
+                rows='4'
+                cols='100'
+                onChange={(e) => editBlock(idx, e.target.value)}
+                value={block}
+              ></textarea>
+              <input
+                type='button'
+                className='btn btn-outline-danger mt-3 ml-2'
+                onClick={() => delBlock(idx)}
+                defaultValue='X'
+              />
+            </div>
+          ))}
+          <div className='row'>
+            <div className='col-1 mr-5'></div>
+            <input
+              type='button'
+              className='btn btn-primary col-9 mt-2'
+              onClick={() => addBlock()}
+              defaultValue='+'
+            />
+          </div>
+          <div className='row mt-4 mb-3'>
+            <div className='col-1 mr-5'>Close:</div>
+            <input
+              className='col-3'
+              type='text'
+              value={close}
+              onChange={(e) => {
+                setClose(e.target.value);
+              }}
+            />
+          </div>
+          <div className='row ml-2 mb-4'>
+            <input
+              type='button'
+              className='btn mt-3 mr-3 btn-outline-dark'
+              onClick={() => setDel(true)}
+              defaultValue='Clear Data'
+            />
+            <input
+              type='button'
+              className='btn btn-outline-dark mt-3 mr-3'
+              onClick={() => saveData()}
+              defaultValue='Save for Later'
+            />
+            <input
+              type='button'
+              className='btn btn-dark mt-3'
+              onClick={() => pdfDownload(true, false)}
+              defaultValue='Download'
+            />
+          </div>
+          {save && (
+            <div className='row justify-content-md-center'>
+              <input
+                type='button'
+                className='btn btn-success mt-5 mb-5 col-6'
+                disabled
+                defaultValue='Successfully Saved'
+              />
+            </div>
+          )}
         </div>
-      ))}
-      <div className='row'>
-        <div className='col-1 mr-5'></div>
-        <input
-          type='button'
-          className='btn btn-primary col-9 mt-2'
-          onClick={() => addBlock()}
-          defaultValue='+'
-        />
-      </div>
-      <div className='row mt-4 mb-3'>
-        <div className='col-1 mr-5'>Close:</div>
-        <input
-          className='col-3'
-          type='text'
-          value={close}
-          onChange={(e) => {
-            setClose(e.target.value);
-          }}
-        />
-      </div>
-      <div className='row ml-2'>
-        <input
-          type='button'
-          className='btn mt-3 mr-3 btn-outline-dark'
-          onClick={() => setDel(true)}
-          defaultValue='Clear Data'
-        />
-        <input
-          type='button'
-          className='btn btn-outline-dark mt-3 mr-3'
-          onClick={() => saveData()}
-          defaultValue='Save for Later'
-        />
-        <input
-          type='button'
-          className='btn btn-dark mt-3'
-          onClick={() => pdfDownload()}
-          defaultValue='Download'
-        />
-      </div>
-      {save && (
-        <div className='row justify-content-md-center'>
-          <input
-            type='button'
-            className='btn btn-success mt-5 mb-5 col-6'
-            disabled
-            defaultValue='Successfully Saved'
-          />
+        <div className='col mt-3 mb-3'>
+          <iframe src={pdfDownload(false, true)} />
         </div>
-      )}
+      </div>
     </div>
   );
 };

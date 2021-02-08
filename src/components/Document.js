@@ -34,7 +34,7 @@ const Document = () => {
     const replaceWords = (string) => {
       var newString = "";
       newString = string.replace("<company>", company);
-      newString = string.replace("<position>", position);
+      newString = string.replace("<position>", position.toLowerCase());
       return newString;
     };
 
@@ -107,7 +107,7 @@ const Document = () => {
         <div className='col-1 mr-5'>Email:</div>
         <input
           className='col-3'
-          type='text'
+          type='email'
           value={email}
           onChange={(e) => {
             setEmail(e.target.value);
@@ -198,7 +198,7 @@ const Document = () => {
       </div>
       <input
         type='button'
-        className='btn btn-dark'
+        className='btn btn-dark mt-3 mb-5'
         onClick={() => pdfDownload()}
         defaultValue='Download'
       />

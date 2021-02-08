@@ -3,6 +3,8 @@ import { jsPDF } from "jspdf";
 import store from "store";
 
 const Document = () => {
+  const p0 =
+    "The <company> and <position> will automatically be replaced by company and position text in the above fields within the paragraphs";
   const p1 =
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 
@@ -16,7 +18,7 @@ const Document = () => {
   const [company, setCompany] = useState("Company Name");
   const [position, setPosition] = useState("Useful Position");
   const [open, setOpen] = useState("To whom it may concern");
-  const [blocks, setBlocks] = useState([p1, p2]);
+  const [blocks, setBlocks] = useState([p0, p1, p2]);
   const [close, setClose] = useState("Sincerely");
   const [del, setDel] = useState(false);
   const [save, setSave] = useState(false);

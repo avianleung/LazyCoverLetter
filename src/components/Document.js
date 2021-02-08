@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { jsPDF } from "jspdf";
+import store from "store";
 
 const Document = () => {
   const [name, setName] = useState("");
@@ -10,6 +11,18 @@ const Document = () => {
   const [open, setOpen] = useState("To whom it may concern");
   const [blocks, setBlocks] = useState([""]);
   const [close, setClose] = useState("Sincerely");
+  const [del, setDel] = useState(false);
+
+  useEffect(() => {
+    setName(store.get("name"));
+    setNumber(store.get("number"));
+    setEmail(store.get("email"));
+    if (store.get("blocks")) {
+      setBlocks(store.get("blocks"));
+    }
+    setOpen(store.get("open"));
+    setClose(store.get("close"));
+  }, []);
 
   const addBlock = () => {
     let block = [...blocks];
@@ -28,6 +41,20 @@ const Document = () => {
     let block = [...blocks];
     block[index] = value;
     setBlocks(block);
+  };
+
+  const saveData = () => {
+    store.set("name", name);
+    store.set("number", number);
+    store.set("email", email);
+    store.set("blocks", blocks);
+    store.set("open", open);
+    store.set("close", close);
+  };
+
+  const clearData = () => {
+    store.clearAll();
+    window.location.reload(false);
   };
 
   const pdfDownload = () => {
@@ -76,12 +103,41 @@ const Document = () => {
 
   return (
     <div className='container-fluid'>
+      {del && (
+        <div>
+          <div className='popup-bg'></div>
+          <div className='popup'>
+            <div className='card popup-card'>
+              <div className='card-body'>
+                <h5>Confirm Data Delete</h5>
+                <p className='mt-3'>Are you sure you want to clear all data?</p>
+                <div className='mt-4 d-flex justify-content-end'>
+                  <button
+                    className='btn btn-sm btn-dark mr-3'
+                    onClick={() => setDel(false)}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    className='btn btn-sm btn-dark'
+                    onClick={() => {
+                      clearData();
+                    }}
+                  >
+                    Clear
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       <div className='row mb-2'>
         <div className='col'>
           <h1>Lazy Cover Letter</h1>
         </div>
       </div>
-      <div className='row'>
+      <div className='row mb-1'>
         <div className='col-1 mr-5'>Name:</div>
         <input
           className='col-3'
@@ -92,7 +148,7 @@ const Document = () => {
           }}
         />
       </div>
-      <div className='row'>
+      <div className='row mb-1'>
         <div className='col-1 mr-5'>Phone:</div>
         <input
           className='col-3'
@@ -103,7 +159,7 @@ const Document = () => {
           }}
         />
       </div>
-      <div className='row'>
+      <div className='row mb-1'>
         <div className='col-1 mr-5'>Email:</div>
         <input
           className='col-3'
@@ -114,7 +170,7 @@ const Document = () => {
           }}
         />
       </div>
-      <div className='row'>
+      <div className='row mb-1'>
         <div className='col-1 mr-5'>Company:</div>
         <input
           className='col-3'
@@ -125,7 +181,7 @@ const Document = () => {
           }}
         />
       </div>
-      <div className='row'>
+      <div className='row mb-4'>
         <div className='col-1 mr-5'>Position:</div>
         <input
           className='col-3'
@@ -151,7 +207,7 @@ const Document = () => {
       <div className='row mt-4'>
         <div className='col'>
           {
-            "* Replace company name with <company> and position with <position> in your paragraphs"
+            "* Replace the company name with <company> and the position with <position> in your paragraphs."
           }
         </div>
       </div>
@@ -196,6 +252,18 @@ const Document = () => {
           }}
         />
       </div>
+      <input
+        type='button'
+        className='btn mt-3 mb-5 mr-3 btn-outline-dark'
+        onClick={() => setDel(true)}
+        defaultValue='Clear Data'
+      />
+      <input
+        type='button'
+        className='btn btn-outline-dark mt-3 mb-5 mr-3'
+        onClick={() => saveData()}
+        defaultValue='Save for Later'
+      />
       <input
         type='button'
         className='btn btn-dark mt-3 mb-5'

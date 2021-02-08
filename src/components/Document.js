@@ -12,16 +12,27 @@ const Document = () => {
   const [blocks, setBlocks] = useState([""]);
   const [close, setClose] = useState("Sincerely");
   const [del, setDel] = useState(false);
+  const [save, setSave] = useState(false);
 
   useEffect(() => {
-    setName(store.get("name"));
-    setNumber(store.get("number"));
-    setEmail(store.get("email"));
+    if (store.get("name")) {
+      setName(store.get("name"));
+    }
+    if (store.get("number")) {
+      setNumber(store.get("number"));
+    }
+    if (store.get("email")) {
+      setEmail(store.get("email"));
+    }
     if (store.get("blocks")) {
       setBlocks(store.get("blocks"));
     }
-    setOpen(store.get("open"));
-    setClose(store.get("close"));
+    if (store.get("open")) {
+      setOpen(store.get("open"));
+    }
+    if (store.get("close")) {
+      setClose(store.get("close"));
+    }
   }, []);
 
   const addBlock = () => {
@@ -44,12 +55,17 @@ const Document = () => {
   };
 
   const saveData = () => {
+    setSave(true);
     store.set("name", name);
     store.set("number", number);
     store.set("email", email);
     store.set("blocks", blocks);
     store.set("open", open);
     store.set("close", close);
+
+    setTimeout(function () {
+      setSave(false);
+    }, 3000);
   };
 
   const clearData = () => {
@@ -252,24 +268,36 @@ const Document = () => {
           }}
         />
       </div>
-      <input
-        type='button'
-        className='btn mt-3 mb-5 mr-3 btn-outline-dark'
-        onClick={() => setDel(true)}
-        defaultValue='Clear Data'
-      />
-      <input
-        type='button'
-        className='btn btn-outline-dark mt-3 mb-5 mr-3'
-        onClick={() => saveData()}
-        defaultValue='Save for Later'
-      />
-      <input
-        type='button'
-        className='btn btn-dark mt-3 mb-5'
-        onClick={() => pdfDownload()}
-        defaultValue='Download'
-      />
+      <div className='row ml-2'>
+        <input
+          type='button'
+          className='btn mt-3 mr-3 btn-outline-dark'
+          onClick={() => setDel(true)}
+          defaultValue='Clear Data'
+        />
+        <input
+          type='button'
+          className='btn btn-outline-dark mt-3 mr-3'
+          onClick={() => saveData()}
+          defaultValue='Save for Later'
+        />
+        <input
+          type='button'
+          className='btn btn-dark mt-3'
+          onClick={() => pdfDownload()}
+          defaultValue='Download'
+        />
+      </div>
+      {save && (
+        <div className='row justify-content-md-center'>
+          <input
+            type='button'
+            className='btn btn-success mt-5 mb-5 col-6'
+            disabled
+            defaultValue='Successfully Saved'
+          />
+        </div>
+      )}
     </div>
   );
 };

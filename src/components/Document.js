@@ -238,7 +238,7 @@ const Document = () => {
             />
           </div>
           <div className='row'>
-            <div className='col-1 mr-5'>Open:</div>
+            <div className='col-1 mr-5'>Salutation:</div>
             <input
               className='col-3'
               type='text'

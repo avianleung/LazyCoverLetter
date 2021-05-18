@@ -84,8 +84,8 @@ const Document = () => {
 
   const pdfDownload = (print, view) => {
     const replaceWords = (string) => {
-      var newString = string.replace("<position>", position.toLowerCase());
-      var newString2 = newString.replace("<company>", company);
+      var newString = string.replace(/<position>/g, position.toLowerCase());
+      var newString2 = newString.replace(/<company>/g, company);
       return newString2;
     };
 

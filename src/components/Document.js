@@ -33,6 +33,12 @@ const Document = () => {
     if (store.get("email")) {
       setEmail(store.get("email"));
     }
+    if (store.get("company")) {
+      setCompany(store.get("company"));
+    }
+    if (store.get("position")) {
+      setPosition(store.get("position"));
+    }
     if (store.get("blocks")) {
       setBlocks(store.get("blocks"));
     }
@@ -41,12 +47,6 @@ const Document = () => {
     }
     if (store.get("close")) {
       setClose(store.get("close"));
-    }
-    if (store.get("company")) {
-      setClose(store.get("company"));
-    }
-    if (store.get("position")) {
-      setClose(store.get("position"));
     }
   }, []);
 
@@ -74,11 +74,11 @@ const Document = () => {
     store.set("name", name);
     store.set("number", number);
     store.set("email", email);
+    store.set("company", company);
+    store.set("position", position);
     store.set("blocks", blocks);
     store.set("open", open);
     store.set("close", close);
-    store.set("company", company);
-    store.set("position", position);
 
     setTimeout(function () {
       setSave(false);

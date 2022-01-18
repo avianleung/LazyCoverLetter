@@ -42,6 +42,12 @@ const Document = () => {
     if (store.get("close")) {
       setClose(store.get("close"));
     }
+    if (store.get("company")) {
+      setClose(store.get("company"));
+    }
+    if (store.get("position")) {
+      setClose(store.get("position"));
+    }
   }, []);
 
   const addBlock = () => {
@@ -71,6 +77,8 @@ const Document = () => {
     store.set("blocks", blocks);
     store.set("open", open);
     store.set("close", close);
+    store.set("company", company);
+    store.set("position", position);
 
     setTimeout(function () {
       setSave(false);
@@ -331,7 +339,7 @@ const Document = () => {
           )}
         </div>
         <div className='col mt-3 mb-3'>
-          <iframe src={pdfDownload(false, true)} />
+          <iframe title={company} src={pdfDownload(false, true)}  />
         </div>
       </div>
     </div>
